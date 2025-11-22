@@ -40,9 +40,6 @@
 
 <img width="1172" height="819" alt="image" src="https://github.com/user-attachments/assets/c3bf1fd3-f1a7-47b3-bafb-5edf00229267" />
 
-
-Can be found here: "https://miro.com/app/board/uXjVJoAx08I=/?moveToWidget=3458764649382668269"
-
 ### Architecture Overview
 Tasks are ingested via an HTTP edge endpoint, which accepts any type of task and immediately produces an event to a Kafka topic(task.received). Events are partitioned by task priority, ensuring that high-priority (“hot”) tasks are processed first.
 
