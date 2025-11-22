@@ -32,17 +32,14 @@
 
 ## Proposed System 
 ### Diagram
-1. High Level Architectural diagram
-2. System architecture - sequence diagram
+#### High Level Architectural diagram
+<img width="784" height="832" alt="image" src="https://github.com/user-attachments/assets/5a638e02-b3ea-4159-8d00-873863ac0dc9" />
+
+####System architecture - sequence diagram
+<img width="1172" height="819" alt="image" src="https://github.com/user-attachments/assets/c3bf1fd3-f1a7-47b3-bafb-5edf00229267" />
+
+
 Can be found here: "https://miro.com/app/board/uXjVJoAx08I=/?moveToWidget=3458764649382668269"
-### Description 
-New tasks are inserted into the task processing plateform via a edeg endpoint which is menat to receive any kind sof tasks and immidetely produce a event to a kafka topic her the partition key is the task priority just to make sure the hot events are processed quickely, latter the events from this kafka topic are processed by a lightweight, always-on **Router Service** continuously watches for new rows, determines each task’s priority, and immediately publishes the task to one of two Kafka topics: `tasks.hot` for high/critical priority or `tasks.cold` for normal/best-effort work.
-
-Latter A **single unified worker fleet** (one Python binary) consumes both topics:
-- **Hot path** → calls the `/single` endpoint instantly for low-latency results.
-- **Cold path** → dynamically groups prompts by model and sends large, optimal batches (last 1 sec) to the `/batch` endpoint for maximum throughput and cost efficiency.
-All model calls pass through a **global Redis + Lua token bucket** that atomically enforces exact RPM/TPM limits per model, performs weighted model selection, and applies quota changes instantly without restarts. Once the model responds, the worker updates PostgreSQL and commits the Kafka offset, guaranteeing exactly-once processing.
-
 
 ### Architecture Overview
 Tasks are ingested via an HTTP edge endpoint, which accepts any type of task and immediately produces an event to a Kafka topic(task.received). Events are partitioned by task priority, ensuring that high-priority (“hot”) tasks are processed first.
