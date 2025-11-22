@@ -34,11 +34,12 @@
 ### Diagram
 #### High Level Architectural diagram
 
-<img width="784" height="832" alt="image" src="https://github.com/user-attachments/assets/5a638e02-b3ea-4159-8d00-873863ac0dc9" />
+<img width="958" height="931" alt="image" src="https://github.com/user-attachments/assets/4d8c6377-1a98-429f-821e-519d462cf2c8" />
+
 
 #### System architecture - sequence diagram
 
-<img width="1172" height="819" alt="image" src="https://github.com/user-attachments/assets/c3bf1fd3-f1a7-47b3-bafb-5edf00229267" />
+<img width="1238" height="829" alt="image" src="https://github.com/user-attachments/assets/3be621a5-73fe-48b3-bc09-6f67416e633f" />
 
 ### Architecture Overview
 Tasks are ingested via an HTTP edge endpoint, which accepts any type of task and immediately produces an event to a Kafka topic(task.received). Events are partitioned by task priority, ensuring that high-priority (“hot”) tasks are processed first.
