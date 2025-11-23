@@ -36,8 +36,7 @@
 #### High Level Architectural diagram
 
 <img width="881" height="900" alt="image" src="https://github.com/user-attachments/assets/04287271-dc5d-40d3-9728-2ceddbed15db" />
-https://miro.com/app/board/uXjVJmbknk4=/?share_link_id=128751646266
-> For an interactive version or better readability, view the diagram in our [Miro board](https://miro.com/app/board/uXjVJmbknk4=/?moveToWidget=3458764649616160272)
+> For an interactive version or better readability, view the diagram in our [Miro board|https://miro.com/app/board/uXjVJmbknk4=/?moveToWidget=3458764649616160272]
 
 #### System architecture - sequence diagram
 
