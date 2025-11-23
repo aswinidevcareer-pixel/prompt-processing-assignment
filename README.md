@@ -35,12 +35,11 @@
 ### Diagram
 #### High Level Architectural diagram
 
-<img width="958" height="931" alt="image" src="https://github.com/user-attachments/assets/4d8c6377-1a98-429f-821e-519d462cf2c8" />
-
+<img width="881" height="900" alt="image" src="https://github.com/user-attachments/assets/04287271-dc5d-40d3-9728-2ceddbed15db" />
 
 #### System architecture - sequence diagram
 
-<img width="1238" height="829" alt="image" src="https://github.com/user-attachments/assets/3be621a5-73fe-48b3-bc09-6f67416e633f" />
+<img width="1202" height="799" alt="image" src="https://github.com/user-attachments/assets/3be75934-6063-4f02-b4a7-762d5dda14b6" />
 
 ### Architecture Overview
 Tasks are ingested via an HTTP edge endpoint, which accepts any type of task and performs the following steps:
