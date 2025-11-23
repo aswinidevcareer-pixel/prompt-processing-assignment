@@ -22,11 +22,12 @@
 6. Hard 30-minute timeout → DAG ends and restarts later
 
 ### Major Bottlenecks
+- **Batch tail latency**: Slowest task in a batch delays the entire batch response.
+- **Uneven model traffic**: No per-model rate control means some models may be overused or underused.
+- **Database contention**: High parallel writes/reads to Postgres can cause transaction bottlenecks. Also pulling **all** unsolved tasks from Postgres.
 - **Cold starts** – tasks wait minutes just for the DAG to begin  
-- **No per-model traffic control** – impossible to enforce “model 1 ≤ 800 RPM”  
-- **Quota changes** require code + DAG redeploy  
+- **Fixed worker timeout**: Rigid 30-minute timeouts may abort slow workers prematurely.
 - **Fixed batch size of 10** – too small for cheap models, too risky for slow ones  
-- **30-minute timeout** silently drops long prompts  
 - **No backpressure** – all workers hammer models 
 - **No priority support** – urgent tasks blocked by bulk jobs  
 
