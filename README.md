@@ -39,7 +39,7 @@
 
 #### System architecture - sequence diagram
 
-<img width="1202" height="799" alt="image" src="https://github.com/user-attachments/assets/3be75934-6063-4f02-b4a7-762d5dda14b6" />
+<img width="1237" height="824" alt="image" src="https://github.com/user-attachments/assets/c74b21bc-5e9f-46ab-b9c8-9d7048591764" />
 
 ### Architecture Overview
 Tasks are ingested via an HTTP edge endpoint, which accepts any type of task and performs the following steps:
