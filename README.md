@@ -22,9 +22,9 @@
 6. Hard 30-minute timeout → DAG ends and restarts later
 
 ### Major Bottlenecks
-- **Batch tail latency**: Slowest task in a batch delays the entire batch response.
 - **Uneven model traffic**: No per-model rate control means some models may be overused or underused.
 - **Database contention**: High parallel writes/reads to Postgres can cause transaction bottlenecks. Also pulling **all** unsolved tasks from Postgres.
+- **Batch tail latency**: Slowest task in a batch delays the entire batch response.
 - **Cold starts** – tasks wait minutes just for the DAG to begin  
 - **Fixed worker timeout**: Rigid 30-minute timeouts may abort slow workers prematurely.
 - **Fixed batch size of 10** – too small for cheap models, too risky for slow ones  
@@ -56,6 +56,8 @@ Latter A **single unified worker fleet** (one Python binary) consumes both topic
 - **Cold path** → dynamically groups prompts by model and sends large, optimal batches (last 1 sec) to the `/batch` endpoint for maximum throughput and cost efficiency.
 
 All model calls pass through a **global Redis + Lua token bucket** that atomically enforces exact RPM/TPM limits per model, performs weighted model selection, and applies quota changes instantly without restarts. Once the model responds, the worker updates PostgreSQL and commits the Kafka offset, guaranteeing exactly-once processing.
+
+The `PUT /model-config/{model_id}` endpoint is used to update the full configuration of a model, replacing its current settings.
 
 ### Pseudocode for key/important parts:
 #### Python Pseudocode
