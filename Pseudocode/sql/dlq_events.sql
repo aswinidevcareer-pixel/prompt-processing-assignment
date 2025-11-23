@@ -1,5 +1,5 @@
 
--- Dead Letter Queue tracking (what went to tasks.dlq)
+-- Dead Letter Queue tracking (what went to task.dlq)
 CREATE TABLE dlq_events (
     id              BIGSERIAL PRIMARY KEY,
     task_id         BIGINT REFERENCES tasks(id),
