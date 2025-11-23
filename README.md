@@ -60,8 +60,7 @@ The `PUT /model-config/{model_id}` endpoint is used to update the full configura
 ### Pseudocode for key/important parts:
 #### Python Pseudocode
 1. api/create-task-endpoint.py → Pseudocode for `POST: /task` endpoint
-2. consumer/task-processer.py → Pseudocode for **single unified worker fleet**
-3. consumer/cold-hot-task-processer.py → Pseudocode for **single unified worker fleet**
+3. consumer/cold-hot-task-processer.py → Pseudocode for **single unified worker fleet for both hot and cold tasks**
 4. api/update-model-config-endpoint.py → Pseudocode for `PUT: /model-config` endpoint
 #### SQL Pseudocode
 1. dlq_events.sql
