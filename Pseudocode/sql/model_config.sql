@@ -5,7 +5,7 @@ CREATE TABLE model_config (
     target_rpm      INTEGER NOT NULL DEFAULT 600,           -- requests per minute
     weight          NUMERIC NOT NULL DEFAULT 1.0,           -- routing weight
     tier            TEXT NOT NULL DEFAULT 'standard',       -- premium, standard, cheap
-    burst           INTEGER DEFAULT 200,
+    burst           INTEGER DEFAULT 200,                    -- maximum number of tokens in the bucket (burst capacity)
     enabled         BOOLEAN DEFAULT true,
     updated_at      TIMESTAMPTZ DEFAULT NOW()
 );
