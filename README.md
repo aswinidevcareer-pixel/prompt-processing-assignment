@@ -37,13 +37,13 @@
 
 <img width="881" height="900" alt="image" src="https://github.com/user-attachments/assets/04287271-dc5d-40d3-9728-2ceddbed15db" />
 
-> For an interactive version or better readability, view the diagram in our [Miro board](https://miro.com/app/board/uXjVJmbknk4=/?moveToWidget=3458764649616160272)
+> For an interactive version or better readability, view the diagram in [Miro board](https://miro.com/app/board/uXjVJmbknk4=/?moveToWidget=3458764649616160272)
 
 #### System architecture - sequence diagram
 
 <img width="1237" height="824" alt="image" src="https://github.com/user-attachments/assets/c74b21bc-5e9f-46ab-b9c8-9d7048591764" />
 
-> For an interactive version or better readability, view the diagram in our [Miro board](https://miro.com/app/board/uXjVJmbknk4=/?moveToWidget=3458764649616160333&cot=14)
+> For an interactive version or better readability, view the diagram in [Miro board](https://miro.com/app/board/uXjVJmbknk4=/?moveToWidget=3458764649616160333&cot=14)
 
 ### Architecture Overview
 Tasks are ingested via an HTTP edge endpoint, which accepts any type of task and performs the following steps:
@@ -64,7 +64,7 @@ The `PUT /model-config/{model_id}` endpoint is used to update the full configura
 
 <img width="722" height="681" alt="image" src="https://github.com/user-attachments/assets/624161be-2a83-401d-9425-57a2e1bca878" />
 
-> For an interactive version or better readability, view the diagram in our [Miro board](https://miro.com/app/board/uXjVJmbknk4=/?moveToWidget=3458764649616160411&cot=14)
+> For an interactive version or better readability, view the diagram in [Miro board](https://miro.com/app/board/uXjVJmbknk4=/?moveToWidget=3458764649616160411&cot=14)
 
 It use a **token bucket** algorithm backed by Redis + a Lua script to enforce rate limiting:
 - Each model (or client) has its own “bucket” in Redis, stored as a hash with two fields:
