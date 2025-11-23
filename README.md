@@ -57,6 +57,9 @@ All model calls pass through a **global Redis + Lua token bucket** that atomical
 The `PUT /model-config/{model_id}` endpoint is used to update the full configuration of a model, replacing its current settings.
 
 ### Rate Limiting (Token Bucket)
+
+<img width="722" height="681" alt="image" src="https://github.com/user-attachments/assets/624161be-2a83-401d-9425-57a2e1bca878" />
+
 It use a **token bucket** algorithm backed by Redis + a Lua script to enforce rate limiting:
 - Each model (or client) has its own “bucket” in Redis, stored as a hash with two fields:
   - `tokens`: the current number of tokens  
