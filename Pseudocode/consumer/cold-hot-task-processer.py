@@ -15,9 +15,9 @@ from aiokafka.structs import OffsetAndMetadata
 # CONFIGURATION
 # ─────────────────────────────────────────────────────────────
 KAFKA_BOOTSTRAP = "kafka-cluster:9092"
-HOT_TOPIC = "tasks.hot"
-COLD_TOPIC = "tasks.cold"
-DLQ_TOPIC = "tasks.dlq"
+HOT_TOPIC = "task.hot"
+COLD_TOPIC = "task.cold"
+DLQ_TOPIC = "task.dlq"
 GROUP_ID = "llm-workers-v2025"
 
 REDIS_URL = "redis://redis-cluster"
@@ -275,6 +275,7 @@ class ColdWorker:
                 async with pool.acquire() as conn:
                     async with conn.transaction():
                         for it, ans in zip(group, answers):
+                            # TODO: Refactor this logic to use bulk update (updateMany)
                             await conn.execute(
                                 "UPDATE tasks SET status='solved', answer=$1, solved_at=NOW() WHERE id=$2",
                                 ans, it["task_id"]
