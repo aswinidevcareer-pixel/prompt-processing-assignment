@@ -43,9 +43,7 @@
 <img width="1238" height="829" alt="image" src="https://github.com/user-attachments/assets/3be621a5-73fe-48b3-bc09-6f67416e633f" />
 
 ### Architecture Overview
-Tasks are ingested via an HTTP edge endpoint, which accepts any type of task and immediately produces an event to a Kafka topic(task.received). Events are partitioned by task priority, ensuring that high-priority (“hot”) tasks are processed first.
-
-A lightweight, always-on `Task Ingestion Processor` continuously consumes from this input topic, and performs the following steps:
+Tasks are ingested via an HTTP edge endpoint, which accepts any type of task and performs the following steps:
  1. Persists the task into a PostgreSQL database.
  2. Determines the priority of each task, and forwards it to one of two Kafka topics:
     - **tasks.hot** — for critical or high-priority tasks
