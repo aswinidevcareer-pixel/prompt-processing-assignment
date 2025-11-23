@@ -57,6 +57,20 @@ All model calls pass through a **global Redis + Lua token bucket** that atomical
 
 The `PUT /model-config/{model_id}` endpoint is used to update the full configuration of a model, replacing its current settings.
 
+### Rate Limiting (Token Bucket)
+It use a **token bucket** algorithm backed by Redis + a Lua script to enforce rate limiting:
+- Each model (or client) has its own “bucket” in Redis, stored as a hash with two fields:
+  - `tokens`: the current number of tokens  
+  - `last`: the timestamp of the last refill  
+- Tokens are refilled over time at a fixed rate (`refill`), but never beyond a configured maximum capacity (`burst`).
+- On each request, we run a Lua script that:
+  1. Reads the current token count and `last` timestamp — if none exist (first use), it initializes the bucket to full.  
+  2. Computes how much time has passed since the last refill, then adds tokens accordingly (capped at `burst`).  
+  3. Checks if there is at least **1** token available:  
+     - **If yes**: subtracts one token, updates `last = now`, sets a 1‑hour TTL on the Redis key, and returns `1` (allowed)  
+     - **If no**: returns `0` (rate limit exceeded)
+- Because the logic is executed inside a **Lua script**, the read → refill → consume → update steps are **atomic**, meaning no race conditions even under concurrent requests.
+
 ### Pseudocode for key/important parts:
 #### Python Pseudocode
 1. api/create-task-endpoint.py → Pseudocode for `POST: /task` endpoint
