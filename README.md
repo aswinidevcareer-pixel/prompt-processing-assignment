@@ -41,7 +41,7 @@
 
 #### System architecture - sequence diagram
 
-<img width="1237" height="824" alt="image" src="https://github.com/user-attachments/assets/c74b21bc-5e9f-46ab-b9c8-9d7048591764" />
+<img width="1365" height="912" alt="image" src="https://github.com/user-attachments/assets/75efc34a-4de0-4528-9d44-55289567d8b2" />
 
 > For an interactive version or better readability, view the diagram in [Miro board](https://miro.com/app/board/uXjVJmbknk4=/?moveToWidget=3458764649616160333&cot=14)
 
@@ -88,3 +88,7 @@ It use a **token bucket** algorithm backed by Redis + a Lua script to enforce ra
 1. dlq_events.sql
 2. model_config.sql
 3. tasks.sql
+
+### Recommended Further Enhancements
+- **Introduce adaptive batching**: dynamically adjust the flush interval (or batch size) based on real‑time metrics (queue depth, arrival rate, latency), improving throughput under high load and reducing latency when traffic is low. 
+- **Add an adaptive model routing layer**: select which model to call for each task based on current load, cost, and performance metrics. This can optimize for cost, latency, and quality by shifting weight dynamically between models.
