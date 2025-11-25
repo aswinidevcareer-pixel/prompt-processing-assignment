@@ -56,11 +56,11 @@ async def create_task(req: NewTaskRequest):
             # 1) Insert into Postgres
             row = await conn.fetchrow(
                 """
-                INSERT INTO tasks (id, prompt, model, priority, metadata, status)
-                VALUES ($1, $2, $3, $4, $5, 'pending')
+                INSERT INTO tasks (id, prompt, priority, status)
+                VALUES ($1, $2, $3, 'pending')
                 RETURNING id
                 """,
-                task_id, req.prompt, req.priority or {}
+                task_id, req.prompt, req.priority
             )
 
             # 2) Try to send to Kafka
