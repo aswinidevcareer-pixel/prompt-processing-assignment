@@ -163,8 +163,7 @@ class HotWorker:
         payload = msg.value
         task_id = payload["task_id"]
         prompt = payload["prompt"]
-        priority = payload.get("priority", "normal")
-        tokens = payload.get("tokens", len(prompt.split()))
+        priority = payload["priority"]
         model = await choose_model(priority)
 
         # token bucket
