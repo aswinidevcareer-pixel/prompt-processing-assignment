@@ -238,13 +238,26 @@ class ColdWorker:
     async def handle_batch(self, msgs: List[Any]):
         # Build items
         items = []
+
+        async with self.pool.acquire() as conn:
+            # Pre‑fetch status for all tasks in this batch
+            task_ids = [m.value["task_id"] for m in msgs]
+            rows = await conn.fetch(
+                "SELECT id, status FROM tasks WHERE id = ANY($1)", task_ids
+            )
+            status_map = {row["id"]: row["status"] for row in rows}
+        
         for m in msgs:
             payload = m.value
             task_id = payload["task_id"]
             prompt = payload["prompt"]
             priority = payload["priority"]
-            model = await choose_model(priority)
 
+            if status_map.get(task_id) == "solved":
+                continue
+            
+            model = await choose_model(priority)
+            
             # token bucket
             while not await acquire_token(model):
                 await asyncio.sleep(0.005)
