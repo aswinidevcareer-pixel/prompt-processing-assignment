@@ -238,6 +238,7 @@ class ColdWorker:
     async def handle_batch(self, msgs: List[Any]):
         # Build items
         items = []
+        succeeded_items = []
 
         async with self.pool.acquire() as conn:
             # Pre‑fetch status for all tasks in this batch
@@ -254,6 +255,7 @@ class ColdWorker:
             priority = payload["priority"]
 
             if status_map.get(task_id) == "solved":
+                succeeded_items.append({"msg": m})
                 continue
             
             model = await choose_model(priority)
@@ -303,10 +305,13 @@ class ColdWorker:
         except Exception as e:
             if attempt > MAX_BATCH_RETRIES:
                 #Update Status
-                await pool.execute(
-                    "UPDATE tasks SET status='failed' WHERE id=$1",
-                    task_id
-                )    
+                failed_ids = [it["task_id"] for it in items]
+                async with self.pool.acquire() as conn:
+                    async with conn.transaction():
+                        await conn.execute(
+                            "UPDATE tasks SET status='failed' WHERE id = ANY($1)",
+                            failed_ids
+                        )  
                 
                 print(f"[ColdWorker] Batch permanent failure after {attempt-1} retries, size={len(items)}: {e}")
                 for it in items:
@@ -315,8 +320,15 @@ class ColdWorker:
                 offsets = {
                     item["msg"].topic_partition: OffsetAndMetadata(item["msg"].offset + 1, None)
                     for item in items
-                }
+                } 
                 await self.consumer.commit(offsets)
+
+                offsets = {
+                    item["msg"].topic_partition: OffsetAndMetadata(item["msg"].offset + 1, None)
+                    for item in succeeded_items
+                } 
+                await self.consumer.commit(offsets)
+                
                 self.retry_counts.pop(batch_key, None)
             else:
                 self.retry_counts[batch_key] = attempt
