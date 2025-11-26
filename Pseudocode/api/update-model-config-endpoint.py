@@ -8,8 +8,14 @@ import asyncpg
 # CONFIG / SETTINGS
 # ─────────────────────────────────────────────────────────────
 POSTGRES_DSN = "postgresql://user:pass@postgres/llm"
+REDIS_URL = "redis://redis-cluster"
+MODEL_LIST_CACHE_KEY = "model_config:all_enabled"
 
 app = FastAPI()
+
+
+redis = aioredis.from_url(REDIS_URL, decode_responses=False)
+
 pool: asyncpg.Pool = None
 
 class ModelConfigUpdate(BaseModel):
@@ -54,9 +60,13 @@ async def update_model_config(model_id: str, cfg: ModelConfigUpdate):
     values.append(model_id)
     sql = "UPDATE model_config SET " + ", ".join(fields) + " WHERE model_id = $" + str(len(values))
     async with pool.acquire() as conn:
-        result = await conn.execute(sql, *values)
-        # result is something like "UPDATE 1" if one row was updated
-        if result != "UPDATE 1":
-            raise HTTPException(status_code=404, detail="Model config not found")
+        async with conn.transaction():
+            result = await conn.execute(sql, *values)
+            # result is something like "UPDATE 1" if one row was updated
+            if result != "UPDATE 1":
+                raise HTTPException(status_code=404, detail="Model config not found")
+                
+            #reset cache
+            redis.delete(MODEL_LIST_CACHE_KEY)
 
     return {"model_id": model_id, "updated": True}
