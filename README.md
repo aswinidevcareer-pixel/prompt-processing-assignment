@@ -35,7 +35,7 @@
 ### Diagram
 #### High Level Architectural diagram
 
-<img width="881" height="900" alt="image" src="https://github.com/user-attachments/assets/04287271-dc5d-40d3-9728-2ceddbed15db" />
+<img width="916" height="914" alt="image" src="https://github.com/user-attachments/assets/80756d46-de98-45c3-85d5-42b525024865" />
 
 > For an interactive version or better readability, view the diagram in [Miro board](https://miro.com/app/board/uXjVJmbknk4=/?moveToWidget=3458764649616160272)
 
