@@ -41,7 +41,7 @@
 
 #### System architecture - sequence diagram
 
-<img width="1365" height="912" alt="image" src="https://github.com/user-attachments/assets/75efc34a-4de0-4528-9d44-55289567d8b2" />
+<img width="1364" height="912" alt="image" src="https://github.com/user-attachments/assets/ed53c743-2365-45e5-9c5b-d11dd684be73" />
 
 > For an interactive version or better readability, view the diagram in [Miro board](https://miro.com/app/board/uXjVJmbknk4=/?moveToWidget=3458764649616160333&cot=14)
 
